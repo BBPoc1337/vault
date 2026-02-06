@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Available Downloads</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #0f0f0f;
+  color: #fff;
+  padding: 20px;
+}
+
+.file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #1c1c1c;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.title {
+  text-transform: capitalize;
+}
+
+.btn {
+  background: #ff4747;
+  border: none;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn:hover {
+  background: #ff2f2f;
+}
+</style>
+</head>
+<body>
+
+<h2>Available Downloads</h2>
+<div id="list">Loading…</div>
+
+<script>
+fetch('/api/list')
+  .then(r => r.json())
+  .then(files => {
+    const list = document.getElementById('list');
+    list.innerHTML = '';
+
+    files.forEach(f => {
+      const div = document.createElement('div');
+      div.className = 'file';
+      div.innerHTML = `
+        <span class="title">${f.title}</span>
+        <a href="/download/${f.slug}">
+          <button class="btn">Download</button>
+        </a>
+      `;
+      list.appendChild(div);
+    });
+  });
+</script>
+
+</body>
+</html>
